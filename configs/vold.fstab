@@ -1,0 +1,2 @@
+dev_mount sdcard /mnt/sdcard 20 /devices/platform/msm_sdcc.3/mmc_host
+dev_mount extsdcard /mnt/extra-sd auto /devices/platform/msm_sdcc.1/mmc_host
