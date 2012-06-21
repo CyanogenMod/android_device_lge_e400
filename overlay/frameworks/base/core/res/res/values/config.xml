@@ -86,4 +86,7 @@
     <!-- Menu+Home+Back -->
     <integer name="config_deviceHardwareKeys">7</integer>
 
+    <!-- Boolean indicating if current platform supports quick switch-on/off of
+                           Bluetooth Module -->
+    <bool name="config_bluetooth_adapter_quick_switch">false</bool>
 </resources>

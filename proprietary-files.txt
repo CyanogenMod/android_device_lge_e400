@@ -19,7 +19,6 @@ lib/hw/camera.msm7x27a.so
 etc/firmware/wlan/volans/WCN1314_cfg.dat
 etc/firmware/wlan/volans/WCN1314_qcom_wlan_nv.bin
 etc/firmware/wlan/volans/WCN1314_qcom_fw.bin
-etc/firmware/wlan/volans/WCN1314_qcom_cfg.ini
 lib/libwmsts.so
 lib/libwms.so
 lib/libwfcu.so

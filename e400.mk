@@ -13,7 +13,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     dalvik.vm.heapgrowthlimit=32m \
     dalvik.vm.heapsize=76m
 
-PRODUCT_AAPT_CONFIG := ldpi mdpi
+PRODUCT_AAPT_CONFIG := normal mdpi ldpi
+PRODUCT_AAPT_PREF_CONFIG := ldpi
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/init.e0.rc:root/init.e0.rc \
@@ -55,7 +56,6 @@ PRODUCT_PACKAGES += \
 # Wifi
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/prebuilt/librasdioif.ko:system/lib/modules/librasdioif.ko \
     $(LOCAL_PATH)/prebuilt/wlan.ko:system/lib/modules/wlan.ko
 
 # BT
@@ -69,6 +69,7 @@ PRODUCT_PACKAGES += \
     gralloc.msm7x27a \
     hwcomposer.msm7x27a \
     copybit.msm7x27a \
+    camera.e400 \
     gps.e400 \
     audio.a2dp.default \
     audio.primary.msm7x27a \

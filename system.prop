@@ -25,3 +25,5 @@ telephony.lteOnGsmDevice=0
 
 ro.additionalmounts=/mnt/extra-sd
 ro.vold.switchablepair=/mnt/sdcard,/mnt/extra-sd
+
+debug.camcorder.disablemeta=1

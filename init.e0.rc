@@ -17,7 +17,7 @@ on emmc-fs
     wait /dev/block/mmcblk0p14
     mount ext4 /dev/block/mmcblk0p14 /system data=ordered,barrier=1
     symlink /data/misc/wifi/WCN1314_qcom_cfg.ini /system/etc/firmware/wlan/volans/WCN1314_qcom_cfg.ini
-    mount ext4 /dev/block/mmcblk0p14 /system ro data=ordered,barrier=1,remount
+    mount ext4 /dev/block/mmcblk0p14 /system remount ro data=ordered,barrier=1
     wait /dev/block/mmcblk0p15
     exec /system/bin/demigod_make_ext4fs -e /dev/block/mmcblk0p15 /persist
     exec /system/bin/e2fsck -p /dev/block/mmcblk0p15
@@ -260,8 +260,7 @@ service netmgrd /system/bin/netmgrd
     class late_start
 
 service hciattach /system/bin/logwrapper /system/bin/sh /system/etc/init.qcom.bt.sh
-    class late_start
+    class main
     user bluetooth
     group qcom_oncrpc bluetooth net_bt_admin
     disabled
-    oneshot
