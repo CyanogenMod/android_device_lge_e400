@@ -1,85 +1,40 @@
-on boot
-    write /sys/class/usb_composite/acm/enable 1
-    write /sys/class/usb_composite/adb/enable 1
-    write /sys/class/usb_composite/diag/enable 1
-    write /sys/class/usb_composite/rndis/enable 0
-    write /sys/class/usb_composite/usb_mass_storage/enable 1
-    write /sys/class/usb_composite/mtp/enable 0
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
+#on boot
+#    write /sys/module/android/parameters/product_id 6000
+#    setprop sys.usb.config $sys.usb.config
 
 on property:sys.usb.config=adb
-    write /sys/class/usb_composite/acm/enable 0
-    write /sys/class/usb_composite/adb/enable 1
-    write /sys/class/usb_composite/diag/enable 0
-    write /sys/class/usb_composite/rndis/enable 0
-    write /sys/class/usb_composite/usb_mass_storage/enable 0
-    write /sys/class/usb_composite/mtp/enable 0
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
+    write /sys/module/android/parameters/product_id 6000
     start adbd
     setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=mass_storage,adb
-    write /sys/class/usb_composite/acm/enable 1
-    write /sys/class/usb_composite/adb/enable 1
-    write /sys/class/usb_composite/diag/enable 1
-    write /sys/class/usb_composite/rndis/enable 0
-    write /sys/class/usb_composite/usb_mass_storage/enable 1
-    write /sys/class/usb_composite/mtp/enable 0
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
+    write /sys/module/android/parameters/product_id 61A6
     start adbd
     setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=mass_storage
-    write /sys/class/usb_composite/acm/enable 0
-    write /sys/class/usb_composite/adb/enable 0
-    write /sys/class/usb_composite/diag/enable 0
-    write /sys/class/usb_composite/rndis/enable 0
-    write /sys/class/usb_composite/usb_mass_storage/enable 1
-    write /sys/class/usb_composite/mtp/enable 0
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
+    write /sys/module/android/parameters/product_id 61C5
     stop adbd
     setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=rndis,adb
-    write /sys/class/usb_composite/acm/enable 1
-    write /sys/class/usb_composite/adb/enable 0
-    write /sys/class/usb_composite/diag/enable 1
-    write /sys/class/usb_composite/rndis/enable 1
-    write /sys/class/usb_composite/usb_mass_storage/enable 1
-    write /sys/class/usb_composite/mtp/enable 0
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
+    write /sys/module/android/parameters/product_id 61D9
     start adbd
     setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=rndis
-    write /sys/class/usb_composite/acm/enable 1
-    write /sys/class/usb_composite/adb/enable 0
-    write /sys/class/usb_composite/diag/enable 1
-    write /sys/class/usb_composite/rndis/enable 1
-    write /sys/class/usb_composite/usb_mass_storage/enable 1
-    write /sys/class/usb_composite/mtp/enable 0
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
+    write /sys/module/android/parameters/product_id 61DA
     stop adbd
     setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=mtp,adb
-    write /sys/class/usb_composite/acm/enable 0
-    write /sys/class/usb_composite/adb/enable 1
-    write /sys/class/usb_composite/diag/enable 0
-    write /sys/class/usb_composite/rndis/enable 0
+    write /sys/module/android/parameters/product_id 61F9
     write /sys/class/usb_composite/usb_mass_storage/enable 0
-    write /sys/class/usb_composite/mtp/enable 1
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
     start adbd
     setprop sys.usb.state $sys.usb.config
 
 on property:sys.usb.config=mtp
-    write /sys/class/usb_composite/acm/enable 0
-    write /sys/class/usb_composite/adb/enable 0
-    write /sys/class/usb_composite/diag/enable 0
-    write /sys/class/usb_composite/rndis/enable 0
+    write /sys/module/android/parameters/product_id 631C
     write /sys/class/usb_composite/usb_mass_storage/enable 0
-    write /sys/class/usb_composite/mtp/enable 1
-    write /sys/class/usb_composite/usb_cdrom_storage/enable 0
     stop adbd
     setprop sys.usb.state $sys.usb.config
