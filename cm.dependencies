@@ -1,0 +1,7 @@
+[
+ {
+   "repository": "lge-kernel-e400",
+   "target_path": "kernel/lge/e400",
+   "branch": "android-msm-2.6.38"
+ }
+]
