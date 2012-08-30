@@ -71,7 +71,7 @@ camera_module_t HAL_MODULE_INFO_SYM = {
       version_major: 1,
       version_minor: 0,
       id: CAMERA_HARDWARE_MODULE_ID,
-      name: "Camera HAL for ICS",
+      name: "Camera wrapper for ICS",
       author: "Raviprasad V Mummidi",
       methods: &camera_module_methods,
       dso: NULL,
@@ -211,14 +211,6 @@ CameraHAL_HandlePreviewData(const android::sp<android::IMemory>& dataPtr,
    }
 }
 
-typedef struct {
-uint32_t dx;
-uint32_t dy;
-unsigned char * imgPtr;
-} yuv_image_type;
-
-int (*LINK_yuv_convert_ycrcb420sp_to_yv12_inplace) (yuv_image_type* yuvStructPtr);
-
 camera_memory_t *
 CameraHAL_GenClientData(const android::sp<android::IMemory> &dataPtr, 
                         camera_request_memory reqClientMemory,
@@ -228,16 +220,6 @@ CameraHAL_GenClientData(const android::sp<android::IMemory> &dataPtr,
    size_t           size;
    camera_memory_t *clientData = NULL;
 
-      /*int32_t previewWidth, previewHeight;
-      android::CameraParameters hwParameters = qCamera->getParameters();
-      hwParameters.getPreviewSize(&previewWidth, &previewHeight);
-	yuv_image_type in_buf;
-               in_buf.imgPtr = (unsigned char *)dataPtr->pointer();
-               in_buf.dx  = previewWidth;
-               in_buf.dy  = previewHeight;
-	LOGD("DOING INLINE CONVERSION for %d", previewWidth);
-      LINK_yuv_convert_ycrcb420sp_to_yv12_inplace(&in_buf);*/
-
    android::sp<android::IMemoryHeap> mHeap = dataPtr->getMemory(&offset, &size);
 
    LOGV("CameraHAL_GenClientData: offset:%#x size:%#x base:%p\n",
@@ -245,9 +227,6 @@ CameraHAL_GenClientData(const android::sp<android::IMemory> &dataPtr,
 
    clientData = reqClientMemory(-1, size, 1, user);
    if (clientData != NULL) {
-
-      //clientData->data = (char *)(mHeap->base()) + offset;
-
       memcpy(clientData->data, (char *)(mHeap->base()) + offset, size);
    } else {
       LOGV("CameraHAL_GenClientData: ERROR allocating memory from client\n");
@@ -287,17 +266,6 @@ CameraHAL_DataTSCb(nsecs_t timestamp, int32_t msg_type,
    LOGD("CameraHAL_DataTSCb: timestamp:%lld now:%lld msg_type:%d user:%p\n",
         timestamp /1000, systemTime(), msg_type, user);
 
-   /*if (externallyRequestedFrames && origData_cb != NULL && 
-          origCamReqMemory != NULL) {
-      camera_memory_t *clientData = CameraHAL_GenClientData(dataPtr,
-                                       origCamReqMemory, user);
-      if (clientData != NULL) {
-         LOGV("CameraHAL_DataCb: Posting %d data to client\n",msg_type);
-         origData_cb(msg_type, clientData, 0, NULL, user);
-         clientData->release(clientData);
-      }
-   }*/
-
    if (origDataTS_cb != NULL && origCamReqMemory != NULL) {
       camera_memory_t *clientData = CameraHAL_GenClientData(dataPtr,
                                        origCamReqMemory, user);
@@ -326,10 +294,10 @@ CameraHAL_FixupParams(android::CameraParameters &settings)
    const char *preferred_frame_rate = "15";
 
    settings.set(android::CameraParameters::KEY_VIDEO_FRAME_FORMAT,
-                android::CameraParameters::PIXEL_FORMAT_YV12);
+                android::CameraParameters::PIXEL_FORMAT_YUV420SP);
 
    settings.set(android::CameraParameters::KEY_PREVIEW_FORMAT,
-                android::CameraParameters::PIXEL_FORMAT_NV12);
+                android::CameraParameters::PIXEL_FORMAT_YUV420SP);
 
    if (!settings.get(android::CameraParameters::KEY_SUPPORTED_PREVIEW_SIZES)) {
       settings.set(android::CameraParameters::KEY_SUPPORTED_PREVIEW_SIZES,
@@ -342,7 +310,10 @@ CameraHAL_FixupParams(android::CameraParameters &settings)
    }
 
    if (!settings.get(android::CameraParameters::KEY_VIDEO_SIZE)) {
+      settings.set("record-size", preferred_size);
       settings.set(android::CameraParameters::KEY_VIDEO_SIZE, preferred_size);
+   } else {
+      settings.set("record-size", settings.get(android::CameraParameters::KEY_VIDEO_SIZE));
    }
 
    if (!settings.get(android::CameraParameters::KEY_PREFERRED_PREVIEW_SIZE_FOR_VIDEO)) {
@@ -683,13 +654,5 @@ qcamera_device_open(const hw_module_t* module, const char* name,
 
    *device = &camera_device->common;
 
-
-void *libmmcamera = ::dlopen("liboemcamera.so", RTLD_NOW);
-   if (!libmmcamera) {
-       LOGE("FATAL ERROR: could not dlopen liboemcamera.so: %s", dlerror());
-      }
-
-*(void **)&LINK_yuv_convert_ycrcb420sp_to_yv12_inplace =
-        ::dlsym(libmmcamera, "yuv_convert_ycrcb420sp_to_yv12");
    return NO_ERROR;
 }
