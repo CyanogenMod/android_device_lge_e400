@@ -1112,8 +1112,6 @@ private:
 #include <binder/MemoryHeapBase.h>
 #include <cutils/ashmem.h>
 
-#include <ui/Overlay.h>
-
 namespace android {
 
 int Overlay::getBppFromFormat(const Format format)
