@@ -264,3 +264,9 @@ service hciattach /system/bin/logwrapper /system/bin/sh /system/etc/init.qcom.bt
     user bluetooth
     group qcom_oncrpc bluetooth net_bt_admin
     disabled
+
+service charger /charger
+    class charger
+    user root
+    group root
+    oneshot
