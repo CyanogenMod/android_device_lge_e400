@@ -270,3 +270,6 @@ service charger /charger
     user root
     group root
     oneshot
+
+on property:init.svc.charger=running
+    exec /system/bin/chgchk
